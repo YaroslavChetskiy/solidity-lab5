@@ -30,7 +30,7 @@ contract Task_06 {
     }
 
     function getAllColors() public view returns (string[] memory) {
-        string;
+        string[] memory allColors = new string[](7);
         for (uint i = 0; i < 7; i++) {
             allColors[i] = colors[i];
         }
