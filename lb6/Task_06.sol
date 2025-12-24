@@ -2,60 +2,46 @@
 pragma solidity ^0.8.0;
 
 contract Task_06 {
-    address public owner;
-
-    mapping(uint8 => string) private colors;
-    uint8 public constant COLORS_COUNT = 7;
+    mapping(uint => string) public colors;
+    address private owner;
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Not the contract owner");
+        require(msg.sender == owner, "Only owner can call this function");
         _;
     }
 
     constructor() {
         owner = msg.sender;
-
-        string[] memory defaults = new string[](COLORS_COUNT);
-        defaults[0] = "Red";
-        defaults[1] = "Orange";
-        defaults[2] = "Yellow";
-        defaults[3] = "Green";
-        defaults[4] = "Blue";
-        defaults[5] = "Indigo";
-        defaults[6] = "Violet";
-
-        for (uint8 i = 0; i < COLORS_COUNT; i++) {
-            colors[i] = defaults[i];
-        }
+        addColor(0, "Red");
+        addColor(1, "Orange");
+        addColor(2, "Yellow");
+        addColor(3, "Green");
+        addColor(4, "Blue");
+        addColor(5, "Indigo");
+        addColor(6, "Violet");
     }
 
-    function addColor(uint8 index, string memory color) public {
-        require(index < COLORS_COUNT, "Index out of range");
+    function addColor(uint index, string memory color) public {
         colors[index] = color;
     }
 
-    function getColor(uint8 index) public view returns (string memory) {
-        require(index < COLORS_COUNT, "Index out of range");
+    function getColor(uint index) public view returns (string memory) {
         return colors[index];
     }
 
-    function colorExists(uint8 index) public view returns (bool) {
-        require(index < COLORS_COUNT, "Index out of range");
+    function getAllColors() public view returns (string[] memory) {
+        string;
+        for (uint i = 0; i < 7; i++) {
+            allColors[i] = colors[i];
+        }
+        return allColors;
+    }
+
+    function colorExists(uint index) public view returns (bool) {
         return bytes(colors[index]).length > 0;
     }
 
-    function removeColor(uint8 index) public onlyOwner {
-        require(index < COLORS_COUNT, "Index out of range");
+    function removeColor(uint index) public onlyOwner {
         delete colors[index];
-    }
-
-    function getAllColors() public view returns (string[] memory) {
-        string[] memory result = new string[](COLORS_COUNT);
-
-        for (uint8 i = 0; i < COLORS_COUNT; i++) {
-            result[i] = colors[i];
-        }
-
-        return result;
     }
 }
