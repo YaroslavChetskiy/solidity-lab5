@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract ExampleUsage {
+contract Task_13 {
     function assertExample(uint256 _value) public pure {
         assert(_value != 0);
     }
