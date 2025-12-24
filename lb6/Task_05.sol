@@ -2,51 +2,40 @@
 pragma solidity ^0.8.0;
 
 contract Task_05 {
-    int256[] private tempsC;
+    int256[] public celsiusTemps;
 
-    function addTemperature(int256 celsius) external {
-        tempsC.push(celsius);
-    }
-
-    function addTemperatures(int256[] calldata celsiusArray) external {
-        for (uint256 i = 0; i < celsiusArray.length; i++) {
-            tempsC.push(celsiusArray[i]);
+    function setCelsiusTemps(int256[] calldata temps) external {
+        delete celsiusTemps;
+        for (uint256 i = 0; i < temps.length; i++) {
+            celsiusTemps.push(temps[i]);
         }
     }
 
-    function getTemperaturesCelsius() external view returns (int256[] memory) {
-        return tempsC;
+    function addCelsiusTemp(int256 temp) external {
+        celsiusTemps.push(temp);
     }
 
-    function _toFahrenheit(int256 celsius) internal pure returns (int256) {
-        return (celsius * 9) / 5 + 32;
-    }
+    function getAllTempsInFahrenheit() external view returns (int256[] memory) {
+        int256[] memory result = new int256[](celsiusTemps.length);
 
-    function convertArrayToFahrenheit(int256[] calldata celsiusArray)
-        external
-        pure
-        returns (int256[] memory)
-    {
-        int256[] memory result = new int256[](celsiusArray.length);
-
-        for (uint256 i = 0; i < celsiusArray.length; i++) {
-            result[i] = (celsiusArray[i] * 9) / 5 + 32;
+        for (uint256 i = 0; i < celsiusTemps.length; i++) {
+            result[i] = _toFahrenheit(celsiusTemps[i]);
         }
 
         return result;
     }
 
-    function getTemperaturesFahrenheit() external view returns (int256[] memory) {
-        int256[] memory result = new int256[](tempsC.length);
+    function convertArrayToFahrenheit(int256[] calldata temps) external pure returns (int256[] memory) {
+        int256[] memory result = new int256[](temps.length);
 
-        for (uint256 i = 0; i < tempsC.length; i++) {
-            result[i] = _toFahrenheit(tempsC[i]);
+        for (uint256 i = 0; i < temps.length; i++) {
+            result[i] = _toFahrenheit(temps[i]);
         }
 
         return result;
     }
 
-    function getCount() external view returns (uint256) {
-        return tempsC.length;
+    function _toFahrenheit(int256 c) private pure returns (int256) {
+        return (c * 9) / 5 + 32;
     }
 }
